@@ -1,0 +1,1 @@
+MinGW32-make && out
