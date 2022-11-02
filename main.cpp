@@ -8,6 +8,7 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 #define G 13
+#define g 0.09
 #define COR 0.9
 
 Engine *engine = nullptr;
@@ -20,11 +21,13 @@ class PhysicalEntity;
 class InelasticEntity;
 class GravitationalEntity;
 class Attractor;
+class CustomEntity;
 
 std::vector<PhysicalEntity *> physicalEntities;
 std::vector<InelasticEntity *> inelasticEntities;
 std::vector<GravitationalEntity *> gravitationalEntities;
 std::vector<Attractor *> attractors;
+std::vector<CustomEntity *> customentities;
 
 class PhysicalEntity : public Object
 {
@@ -50,7 +53,7 @@ public:
     void setMassAndScale(float m)
     {
         mass = m;
-        setScale(1 + (m / 5));
+        setScale(1 + (m / 10));
     }
 
     Vector2D getForce() { return force; }
@@ -152,10 +155,9 @@ public:
                 float MYother = e->getY() + e->getHeight() / 2 + e->getVelocity().y + (e->getForce().y / e->getMass());
 
                 float distance = sqrt(pow(MXself - MXother, 2) + pow(MYself - MYother, 2));
-
                 // if (Collision::Circle(this->getCollider(), e->getCollider()))
                 // if ((MXself >= MXother - e->getWidth()) && (MXother >= MXself - this->getWidth()) && (MYself >= MYother - e->getHeight()) && (MYother >= MYself - this->getHeight()))
-                if (distance <= this->getWidth())
+                if (false and distance <= this->getWidth() / 2 + e->getWidth() / 2)
                 {
                     float selfVx = (this->getVelocity().x * this->getMass() + e->getVelocity().x * e->getMass() + e->getMass() * COR * (e->getVelocity().x - this->getVelocity().x)) / (this->getMass() + e->getMass());
                     float selfVy = (this->getVelocity().y * this->getMass() + e->getVelocity().y * e->getMass() + e->getMass() * COR * (e->getVelocity().y - this->getVelocity().y)) / (this->getMass() + e->getMass());
@@ -209,6 +211,118 @@ public:
     }
 };
 
+class CustomEntity : public PhysicalEntity
+{
+private:
+    bool gravitation = false, inelasticity = false, gravity = false, wallcollisions = false;
+    float wallDampening = 0.75, groundFriction = 0;
+
+public:
+    CustomEntity(int x, int y, char *spritePath) : PhysicalEntity(x, y, spritePath)
+    {
+        customentities.push_back(this);
+        this->setCollider("custom-entity");
+    }
+
+    void toggleGravitation() { gravitation = !gravitation; }
+    void toggleInelasticity() { inelasticity = !inelasticity; }
+    void toggleGravity() { gravity = !gravity; }
+    void toggleWallcollisions() { wallcollisions = !wallcollisions; }
+
+    float getWallDampening() { return wallDampening; }
+    void setWallDampening(float e) { wallDampening = e; }
+
+    float getGroundFriction() { return groundFriction; }
+    void setGroundFriction(float u) { groundFriction = u; }
+
+    void update()
+    {
+
+        PhysicalEntity::update();
+        if (this->gravitation)
+            this->setForce(0, 0);
+
+        if (this->gravity)
+        {
+            this->setForce(0, this->getMass() * g);
+        }
+
+        if (this->wallcollisions)
+        {
+            float MXself = this->getX() + this->getWidth() + this->getVelocity().x + (this->getForce().x / this->getMass());
+            float MYself = this->getY() + this->getHeight() + this->getVelocity().y + (this->getForce().y / this->getMass());
+            if (MXself - this->getWidth() < 0)
+            {
+                this->setVelocity(Vector2D(-floor(wallDampening * this->getVelocity().x), this->getVelocity().y));
+            }
+            if (MXself > SCREEN_WIDTH)
+            {
+                this->setVelocity(Vector2D(-floor(wallDampening * this->getVelocity().x), this->getVelocity().y));
+            }
+            if (MYself - this->getHeight() < 0)
+            {
+                this->setVelocity(Vector2D(this->getVelocity().x, -floor(wallDampening * this->getVelocity().y)));
+            }
+            if (MYself > SCREEN_HEIGHT)
+            {
+                this->setVelocity(Vector2D(this->getVelocity().x, -floor(wallDampening * this->getVelocity().y)));
+            }
+        }
+
+        if (groundFriction > 0)
+        {
+            float MYself = this->getY() + this->getHeight() + this->getVelocity().y + (this->getForce().y / this->getMass());
+            if (MYself >= SCREEN_HEIGHT-1)
+            {
+                this->setVelocity(Vector2D(this->getVelocity().x * (1 - groundFriction/10), this->getVelocity().y));
+            }
+        }
+
+        for (auto &e : customentities)
+        {
+            if (this != e)
+            {
+                if (this->gravitation)
+                {
+                    float numerator = G * this->getMass() * e->getMass();
+                    float distX = e->getX() - this->getX();
+                    float distY = e->getY() - this->getY();
+                    float dist = sqrt(pow(distX, 2) + pow(distY, 2));
+                    float forceMag = numerator / (pow(dist, 2));
+
+                    if ((!Collision::AABB(this->getCollider(), e->getCollider())))
+                    {
+                        if (abs(dist) > 1)
+                        {
+                            float Fx = forceMag * (distX / dist);
+                            float Fy = forceMag * (distY / dist);
+                            this->addForce(Fx, Fy);
+                        }
+                    }
+                }
+                if (this->inelasticity)
+                {
+                    float MXself = this->getX() + this->getWidth() / 2 + this->getVelocity().x + (this->getForce().x / this->getMass());
+                    float MYself = this->getY() + this->getHeight() / 2 + this->getVelocity().y + (this->getForce().y / this->getMass());
+                    float MXother = e->getX() + e->getWidth() / 2 + e->getVelocity().x + (e->getForce().x / e->getMass());
+                    float MYother = e->getY() + e->getHeight() / 2 + e->getVelocity().y + (e->getForce().y / e->getMass());
+
+                    float distance = sqrt(pow(MXself - MXother, 2) + pow(MYself - MYother, 2));
+                    if (distance <= this->getWidth() / 2 + e->getWidth() / 2)
+                    {
+                        float selfVx = (this->getVelocity().x * this->getMass() + e->getVelocity().x * e->getMass() + e->getMass() * COR * (e->getVelocity().x - this->getVelocity().x)) / (this->getMass() + e->getMass());
+                        float selfVy = (this->getVelocity().y * this->getMass() + e->getVelocity().y * e->getMass() + e->getMass() * COR * (e->getVelocity().y - this->getVelocity().y)) / (this->getMass() + e->getMass());
+                        float otherVx = (e->getVelocity().x * e->getMass() + this->getVelocity().x * this->getMass() + this->getMass() * COR * (this->getVelocity().x - e->getVelocity().x)) / (e->getMass() + this->getMass());
+                        float otherVy = (e->getVelocity().y * e->getMass() + this->getVelocity().y * this->getMass() + this->getMass() * COR * (this->getVelocity().y - e->getVelocity().y)) / (e->getMass() + this->getMass());
+                        this->setVelocity(selfVx, selfVy);
+                        e->setVelocity(otherVx, otherVy);
+                    }
+                }
+            }
+        }
+    }
+};
+
 void update()
 {
     for (auto &e : physicalEntities)
@@ -227,6 +341,10 @@ void update()
     {
         e->update();
     }
+    for (auto &e : customentities)
+    {
+        e->update();
+    }
 }
 
 int main(int argv, char **args)
@@ -240,15 +358,34 @@ int main(int argv, char **args)
     engine = new Engine();
     engine->init("MarsPhysics - simulator", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, false);
 
-    float r = 222, rx, ry;
-
+    float r, rx, ry, m1;
+    float vi = 3.3;
+    r = randintRange(100, 150);
     rx = randintRange(-r, r);
     ry = signum(randintRange(-1, 1)) * ((sqrt(r * r - rx * rx)));
-    GravitationalEntity(SCREEN_WIDTH / 2 + rx, SCREEN_HEIGHT / 2 + ry, "res/images/white-circle.png");
-    GravitationalEntity(randintRange(100,1180),randintRange(100,620),"res/images/white-circle.png");
-    GravitationalEntity(randintRange(100,1180),randintRange(100,620),"res/images/white-circle.png");
-    GravitationalEntity(randintRange(100,1180),randintRange(100,620),"res/images/white-circle.png");
-    GravitationalEntity(randintRange(100,1180),randintRange(100,620),"res/images/white-circle.png");
+    GravitationalEntity(SCREEN_WIDTH / 2 + rx, SCREEN_HEIGHT / 2 + ry, "res/images/white-circle.png").setVelocity(Vector2D(rx, ry).perpendicularUnit() * vi * signum(ry));
+    
+    InelasticEntity(200,300,"res/images/white-circle.png").setVelocity(1,0);
+    InelasticEntity(700,310,"res/images/white-circle.png").setVelocity(-1,0);
+
+    // CustomEntity c(300, 300, "res/images/hammer.png");
+    // c.setVelocity(1, 0);
+    // c.setGroundFriction(0.2);
+    // c.toggleGravity();
+    // c.toggleWallcollisions();
+    // c.toggleInelasticity();
+    // CustomEntity a(390, 300, "res/images/hammer.png");
+    // a.setVelocity(2, 0);
+    // a.toggleGravity();
+    // a.setGroundFriction(0.1);
+    // a.toggleWallcollisions();
+    // a.toggleInelasticity();
+    // CustomEntity z(490, 300, "res/images/hammer.png");
+    // z.setVelocity(2, 0);
+    // z.toggleGravity();
+    // z.toggleWallcollisions();
+    // z.setGroundFriction(1);
+    // z.toggleInelasticity();
 
     SDL_Rect testrect;
     testrect.x = testrect.y = 0;

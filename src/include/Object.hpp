@@ -34,10 +34,10 @@ public:
     float getY();
     void setPosition(int x, int y);
 
-    float getWidth(){return transform->width;}
-    float getHeight(){return transform->height;}
+    float getWidth() { return transform->width * transform->scale; }
+    float getHeight() { return transform->height * transform->scale; }
 
-    float getScale(){return transform->scale;}
+    float getScale() { return transform->scale; }
     void setScale(float scale);
 
     float distanceTo(Object o);
@@ -49,5 +49,4 @@ public:
     Vector2D getVelocity() { return transform->velocity; }
     void setVelocity(float Vx, float Vy);
     void setVelocity(Vector2D velocity);
-
 };

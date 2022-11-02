@@ -32,4 +32,9 @@ public:
     Vector2D &Zero();
 
     friend std::ostream &operator<<(std::ostream &stream, const Vector2D &vec);
+
+    float magnitude();
+    Vector2D unit();
+    Vector2D perpendicularUnit();
+    Vector2D dot(const Vector2D &vec);
 };
