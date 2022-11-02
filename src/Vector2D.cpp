@@ -38,23 +38,6 @@ Vector2D &Vector2D::Divide(const Vector2D &vec)
     return *this;
 }
 
-Vector2D &operator+(Vector2D &v1, const Vector2D &v2)
-{
-    return v1.Add(v2);
-}
-Vector2D &operator-(Vector2D &v1, const Vector2D &v2)
-{
-    return v1.Substract(v2);
-}
-Vector2D &operator*(Vector2D &v1, const Vector2D &v2)
-{
-    return v1.Multiply(v2);
-}
-Vector2D &operator/(Vector2D &v1, const Vector2D &v2)
-{
-    return v1.Divide(v2);
-}
-
 Vector2D &Vector2D::operator+=(const Vector2D &vec)
 {
     return this->Add(vec);
