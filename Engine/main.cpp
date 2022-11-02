@@ -353,43 +353,7 @@ int main(int argv, char **args)
     engine = new Engine();
     engine->init("MarsEngine- simulator", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, false);
 
-    float r, rx, ry, m1;
-    float vi = 3.3;
-    r = randintRange(100, 150);
-    rx = randintRange(-r, r);
-    ry = signum(randintRange(-1, 1)) * ((sqrt(r * r - rx * rx)));
-    GravitationalEntity(SCREEN_WIDTH / 2 + rx, SCREEN_HEIGHT / 2 + ry, "res/images/white-circle.png").setVelocity(Vector2D(rx, ry).perpendicularUnit() * vi * signum(ry));
-    GravitationalEntity(SCREEN_WIDTH / 2 + rx, SCREEN_HEIGHT / 2 + ry, "res/images/white-circle.png").setVelocity(Vector2D(rx, ry).perpendicularUnit() * vi * signum(ry));
-    GravitationalEntity(SCREEN_WIDTH / 2 + rx, SCREEN_HEIGHT / 2 + ry, "res/images/white-circle.png").setVelocity(Vector2D(rx, ry).perpendicularUnit() * vi * signum(ry));
-
-    InelasticEntity(200, 315, "res/images/white-circle.png").setVelocity(1, 0);
-    InelasticEntity(700, 300, "res/images/white-circle.png").setVelocity(-1, 0);
-
-    CustomEntity c(300, 300, "res/images/hammer.png");
-    c.setVelocity(1, 0);
-    c.setGroundFriction(0.2);
-    c.setMass(50);
-    c.setWallDampening(0.3);
-    c.toggleGravity();
-    c.toggleWallcollisions();
-    c.toggleInelasticity();
-    // CustomEntity a(390, 300, "res/images/hammer.png");
-    // a.setMass(30);
-    // a.setVelocity(2, 0);
-    // a.toggleGravity();
-    // a.setGroundFriction(0.1);
-    // a.toggleWallcollisions();
-    // a.toggleInelasticity();
-    // CustomEntity z(490, 300, "res/images/hammer.png");
-    // z.setVelocity(2, 0);
-    // z.toggleGravity();
-    // z.toggleWallcollisions();
-    // z.setGroundFriction(1);
-    // z.toggleInelasticity();
-
-    SDL_Rect testrect;
-    testrect.x = testrect.y = 0;
-    testrect.w = testrect.h = 604;
+    //$%=CustomEntitiesHere
 
     while (engine->isRunning())
     {

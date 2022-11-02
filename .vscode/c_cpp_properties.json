@@ -3,8 +3,8 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/src/include"
+                "${workspaceFolder}/Engine/**",
+                "${workspaceFolder}/Engine/src/include"
             ],
             "defines": [
                 "_DEBUG",
