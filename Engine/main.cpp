@@ -154,13 +154,6 @@ public:
                         this->addForce(Fx, Fy);
                     }
                 }
-
-                float MXself = this->getX() + this->getWidth() / 2 + this->getVelocity().x + (this->getForce().x / this->getMass());
-                float MYself = this->getY() + this->getHeight() / 2 + this->getVelocity().y + (this->getForce().y / this->getMass());
-                float MXother = e->getX() + e->getWidth() / 2 + e->getVelocity().x + (e->getForce().x / e->getMass());
-                float MYother = e->getY() + e->getHeight() / 2 + e->getVelocity().y + (e->getForce().y / e->getMass());
-
-                float distance = sqrt(pow(MXself - MXother, 2) + pow(MYself - MYother, 2));
             }
         }
     }
@@ -351,7 +344,7 @@ int main(int argv, char **args)
     int frameTime;
 
     engine = new Engine();
-    engine->init("MarsEngine- simulator", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, false);
+    engine->init("MarsEngine Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, false);
 
     //$%=CustomEntitiesHere
 

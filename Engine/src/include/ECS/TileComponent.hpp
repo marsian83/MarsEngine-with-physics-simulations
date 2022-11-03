@@ -30,13 +30,13 @@ public:
         switch (tileID)
         {
         case 0:
-            path = "res/images/water.jpg";
+            path = "res/images/tile0.jpg";
             break;
         case 1:
-            path = "res/images/dirt.jpg";
+            path = "res/images/tile1.jpg";
             break;
         case 2:
-            path = "res/images/grass.jpg";
+            path = "res/images/tile2.jpg";
             break;
 
         default:

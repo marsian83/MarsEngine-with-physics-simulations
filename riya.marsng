@@ -1,2 +1,0 @@
-harcharan(640,32,Engine/res/images/white-circle.png)[gravity,inelasticity,wallcollisions,velocity<12:0>]
-Khushbu(340,32,Engine/res/images/white-circle.png)[gravity,inelasticity,wallcollisions,velocity<-8:3>]
