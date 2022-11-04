@@ -1,5 +1,7 @@
 .vscode
 
+MarsEngineDependenciesInstaller.exe
+
 Engine/SDL2.dll
 Engine/SDL2_image.dll
 Engine/out.exe
