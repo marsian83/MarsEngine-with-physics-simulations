@@ -1,0 +1,2 @@
+earth(SCREEN_WIDTH/2-2*64/2, SCREEN_HEIGHT/2-64,demo/assets/earth.png)[gravitation,scale<2>,mass<500>]
+satellite(SCREEN_WIDTH/2-250, SCREEN_HEIGHT/2,demo/assets/satellite.png)[gravitation,scale<0.5>,mass<0.2>,velocity<0:8.5>]

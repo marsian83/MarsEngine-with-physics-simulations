@@ -1,0 +1,1 @@
+projectile(64,SCREEN_HEIGHT-64,demo/assets/tennis-ball.png)[gravity,wallcollisions<0.69>,velocity<7.3:-14>,groundfriction<0.55>]

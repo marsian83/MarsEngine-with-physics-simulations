@@ -1,0 +1,3 @@
+ballA(SCREEN_WIDTH/2,100,demo/assets/bowling-ball.png)[gravity,wallcollisions<0.5>,inelasticity,velocity<30:0>,groundfriction<0.9>,mass<9>]
+(SCREEN_WIDTH/2+300,random)[gravity,wallcollisions,inelasticity,velocity<-20:0>,groundfriction<0.3>,mass<4>]
+(random,random,demo/assets/tennis-ball.png)[gravity,wallcollisions<0.83>,inelasticity,velocity<-20:0>,scale<0.5>,groundfriction<0.2>,mass<-3>]

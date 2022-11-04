@@ -1,0 +1,13 @@
+#filetype<cpp>
+GravitationalEntity A(200, 200, "res/images/white-circle.png");
+A.setMass(40);
+A.setVelocity(1, 0);
+GravitationalEntity B(600, 200, "res/images/white-circle.png");
+B.setMass(40);
+B.setVelocity(0, 1);
+GravitationalEntity C(600, 600, "res/images/white-circle.png");
+C.setMass(40);
+C.setVelocity(-1, 0);
+GravitationalEntity D(200, 600, "res/images/white-circle.png");
+D.setMass(40);
+D.setVelocity(0, -1);

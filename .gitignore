@@ -1,0 +1,10 @@
+.vscode
+
+Engine/SDL2.dll
+Engine/SDL2_image.dll
+Engine/out.exe
+Engine/custom.cpp
+
+Engine/src/lib
+Engine/src/include/modules
+Engine/src/include/SDL2

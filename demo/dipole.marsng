@@ -1,0 +1,2 @@
+(SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2)[gravitation,velocity<0:-0.5>,mass<5>,scale<0.5>]
+(SCREEN_WIDTH/2+100,SCREEN_HEIGHT/2)[gravitation,velocity<0:0.5>,mass<5>,scale<0.5>]

@@ -1,0 +1,5 @@
+anvil(100,32,demo/assets/anvil.png)[gravity,wallcollisions<0.1>,scale<1.5>]
+soccerBall(300,32,demo/assets/soccer-ball.png)[gravity,wallcollisions<0.66>]
+feather(500,32,demo/assets/feather.png)[gravity,wallcollisions<0>,force<0.3:-2>,velocity<0:-2>,groundfriction<0.5>,scale<0.7>]
+bowlingBall(SCREEN_WIDTH-100,32,demo/assets/bowling-ball.png)[gravity,wallcollisions<0.15>]
+tennisBall(SCREEN_WIDTH-300,32,demo/assets/tennis-ball.png)[gravity,wallcollisions<0.83>,scale<0.4>]
