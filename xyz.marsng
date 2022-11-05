@@ -1,2 +1,0 @@
-(random,random)[gravity,wallcollisions,inelasticity,groundfriction<0.1>,mscale<0.5>,velocity<55:0>]
-(random,random)[gravity,wallcollisions,groundfriction<0.1>,inelasticity,mscale<0.5>,velocity<55:0>]
