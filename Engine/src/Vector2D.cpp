@@ -114,6 +114,7 @@ Vector2D Vector2D::perpendicularUnit() {
     float ny=-(this->x)/this->y;
     return Vector2D(1,ny).unit();
 }
+
 Vector2D Vector2D::dot(const Vector2D &vec){
     return Vector2D(this->x*vec.x,this->y*vec.y);
 }

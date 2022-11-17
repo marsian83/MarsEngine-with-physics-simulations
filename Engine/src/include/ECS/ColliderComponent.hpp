@@ -10,11 +10,9 @@ class ColliderComponent : public Component
 public:
     SDL_Rect collider;
 
-    std::string tag;
-
     TransformComponent *transform;
 
-    ColliderComponent(std::string t) : tag(t) {}
+    ColliderComponent(){}
 
     void init() override
     {

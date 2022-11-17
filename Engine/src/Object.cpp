@@ -20,9 +20,9 @@ void Object::init(int x, int y, const char *spritePath)
 
 Object::~Object() {}
 
-void Object::setCollider(const char *tag)
+void Object::setCollider()
 {
-    entity.addComponent<ColliderComponent>(tag);
+    entity.addComponent<ColliderComponent>();
 }
 
 Vector2D Object::getPosition()

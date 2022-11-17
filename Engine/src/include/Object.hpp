@@ -19,7 +19,7 @@ public:
 
 
     ColliderComponent getCollider() { return entity.getComponent<ColliderComponent>(); }
-    void setCollider(const char *tag);
+    void setCollider();
 
     // void setKeyboardController();
 

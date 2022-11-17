@@ -87,7 +87,7 @@ public:
     InelasticEntity(int x, int y, char *spritePath) : PhysicalEntity(x, y, spritePath)
     {
         inelasticEntities.push_back(this);
-        this->setCollider("inelastic-entity");
+        this->setCollider();
     }
 
     void update()
@@ -128,7 +128,7 @@ public:
     GravitationalEntity(int x, int y, char *spritePath) : PhysicalEntity(x, y, spritePath)
     {
         gravitationalEntities.push_back(this);
-        this->setCollider("gravitational-entity");
+        this->setCollider();
     }
 
     void update()
@@ -165,7 +165,7 @@ public:
     Attractor(int x, int y, char *spritePath) : PhysicalEntity(x, y, spritePath)
     {
         attractors.push_back(this);
-        this->setCollider("attractor");
+        this->setCollider();
     }
 
     void update()
@@ -199,7 +199,7 @@ public:
     CustomEntity(int x, int y, char *spritePath) : PhysicalEntity(x, y, spritePath)
     {
         customentities.push_back(this);
-        this->setCollider("custom-entity");
+        this->setCollider();
     }
 
     void toggleGravitation() { gravitation = !gravitation; }
