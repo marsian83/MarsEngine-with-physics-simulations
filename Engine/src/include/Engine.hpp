@@ -25,14 +25,11 @@ public:
     void render();
     void clean();
 
-    static void AddTile(int id, int x, int y);
-
-    bool isRunning() { return engineRunning; };
+    bool isRunning();
 
     static SDL_Renderer *renderer;
     static SDL_Event event;
     static Manager manager;
-    static Group default_group;
-
+    static std::vector<Entity *> entities;
     static std::vector<ColliderComponent *> colliders;
 };

@@ -3,7 +3,6 @@
 #include <iostream>
 
 #include "TextureManager.hpp"
-#include "Map.hpp"
 #include "Vector2D.hpp"
 #include "Collision.hpp"
 
@@ -12,27 +11,12 @@
 
 #include "Object.hpp"
 
-Map *map;
 SDL_Renderer *Engine::renderer = nullptr;
 SDL_Event Engine::event;
 Manager Engine::manager;
 
 std::vector<ColliderComponent *> Engine::colliders;
-
-enum groupLabels : std::size_t
-{
-    groupBG,
-    groupMap,
-    groupDefault,
-    Layer1,
-    Layer2,
-    Layer3,
-    Layer4,
-    Layer5,
-    LayerHUD,
-};
-
-Group Engine::default_group = groupDefault;
+std::vector<Entity *> Engine::entities;
 
 Engine::Engine()
 {
@@ -68,7 +52,6 @@ void Engine::init(const char *title, int xpos, int ypos, int width, int height, 
         }
         engineRunning = true;
     }
-    map = new Map();
 }
 
 void Engine::handleEvents()
@@ -91,36 +74,16 @@ void Engine::update()
     manager.update();
 }
 
-auto &bg(Engine::manager.getGroup(groupBG));
-auto &maplayer(Engine::manager.getGroup(groupMap));
-auto &defaultgroup(Engine::manager.getGroup(groupDefault));
-auto &layer(Engine::manager.getGroup(Layer1));
-auto &layer2(Engine::manager.getGroup(Layer2));
-auto &layer3(Engine::manager.getGroup(Layer3));
-auto &layer4(Engine::manager.getGroup(Layer4));
-auto &layer5(Engine::manager.getGroup(Layer5));
-auto &HUD(Engine::manager.getGroup(LayerHUD));
-
 void Engine::render()
 {
     SDL_RenderClear(renderer);
     // render
-    for (auto &t : bg)
-    {
-        t->draw();
-    }
-    for (auto &e : maplayer)
+
+    for (auto &e : entities)
     {
         e->draw();
     }
-    for (auto &p : defaultgroup)
-    {
-        p->draw();
-    }
-    for (auto &e : HUD)
-    {
-        e->draw();
-    }
+
     // present the state of renderer
     SDL_RenderPresent(renderer);
 }
@@ -134,11 +97,4 @@ void Engine::clean()
               << "\n";
 }
 
-void Engine::AddTile(int id, int x, int y)
-{
-    auto &tile(manager.addEntity());
-    tile.addComponent<TileComponent>(x, y, 32, 32, id);
-    tile.addGroup(groupMap);
-}
-
-bool isRunning();
+bool Engine::isRunning() { return engineRunning; }

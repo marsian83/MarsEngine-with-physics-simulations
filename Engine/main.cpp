@@ -189,16 +189,6 @@ public:
     }
 };
 
-class RigidBody : public GravitationalEntity, public InelasticEntity
-{
-
-public:
-    RigidBody(int x, int y, char *spritePath) : InelasticEntity(x, y, spritePath), GravitationalEntity(x, y, spritePath)
-    {
-        this->GravitationalEntity::setCollider("rigid-body");
-    }
-};
-
 class CustomEntity : public PhysicalEntity
 {
 private:

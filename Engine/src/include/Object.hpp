@@ -11,23 +11,17 @@ private:
     Entity &entity = Engine::manager.addEntity();
     TransformComponent *transform;
     SpriteComponent *sprite;
+    void init(int x, int y, const char *spritePath);
 
 public:
-    Object(Group mGroup, int x, int y, const char *spritePath);
     Object(int x, int y, const char *spritePath);
-    Object(Group mGroup, int x, int y, const char *spritePath, bool animated);
-    Object(int x, int y, const char *spritePath, bool animated);
     ~Object();
 
-    void init(Group mGroup, int x, int y, const char *spritePath, bool animated);
 
     ColliderComponent getCollider() { return entity.getComponent<ColliderComponent>(); }
     void setCollider(const char *tag);
-    bool checkCollision(const char *type, Object o);
-    bool checkCollision(const char *type, const char *tag);
-    bool checkCollision(const char *type, ColliderComponent c);
 
-    void setKeyboardController();
+    // void setKeyboardController();
 
     Vector2D getPosition();
     float getX();

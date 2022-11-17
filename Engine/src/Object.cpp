@@ -4,33 +4,18 @@
 
 #include <math.h>
 
-Object::Object(Group mGroup, int x, int y, const char *spritePath)
-{
-    init(mGroup, x, y, spritePath, false);
-}
-
 Object::Object(int x, int y, const char *spritePath)
 {
-    init(Engine::default_group, x, y, spritePath, false);
+    init(x, y, spritePath);
 }
 
-Object::Object(Group mGroup, int x, int y, const char *spritePath, bool animated)
-{
-    init(mGroup, x, y, spritePath, animated);
-}
-
-Object::Object(int x, int y, const char *spritePath, bool animated)
-{
-    init(Engine::default_group, x, y, spritePath, animated);
-}
-
-void Object::init(Group mGroup, int x, int y, const char *spritePath, bool animated)
+void Object::init(int x, int y, const char *spritePath)
 {
     entity.addComponent<TransformComponent>(x, y);
-    entity.addComponent<SpriteComponent>(spritePath, animated);
-    entity.addGroup(mGroup);
+    entity.addComponent<SpriteComponent>(spritePath);
     transform = &entity.getComponent<TransformComponent>();
     sprite = &entity.getComponent<SpriteComponent>();
+    Engine::entities.push_back(&this->entity);
 }
 
 Object::~Object() {}
@@ -38,45 +23,6 @@ Object::~Object() {}
 void Object::setCollider(const char *tag)
 {
     entity.addComponent<ColliderComponent>(tag);
-}
-
-bool Object::checkCollision(const char *type, Object o)
-{
-    if (type == "AABB")
-    {
-        return (Collision::AABB(this->getCollider(), o.getCollider()));
-    }
-}
-
-bool Object::checkCollision(const char *type, const char *tag)
-{
-    if (type == "AABB")
-    {
-
-        for (auto c : Engine::colliders)
-        {
-            if (c->tag == entity.getComponent<ColliderComponent>().tag)
-            {
-                continue;
-            }
-            if (Collision::AABB(entity.getComponent<ColliderComponent>(), *c))
-            {
-                if (c->tag == tag)
-                {
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
-}
-
-bool Object::checkCollision(const char *type, ColliderComponent c)
-{
-    if (type == "AABB")
-    {
-        return (Collision::AABB(this->getCollider(), c));
-    }
 }
 
 Vector2D Object::getPosition()
@@ -112,11 +58,6 @@ float Object::distanceTo(Object o)
 float Object::distanceToPoint(float x, float y)
 {
     return sqrt(pow(x - transform->position.x, 2) + pow(y - transform->position.y, 2));
-}
-
-void Object::setKeyboardController()
-{
-    entity.addComponent<KeyboardController>();
 }
 
 void Object::setSpeed(float speed)
